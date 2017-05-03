@@ -25,33 +25,29 @@ public class PlayerTimeTableManager extends PlayerFromSeichiTableManager{
 	@Override
 	public void loadPlayer(GiganticPlayer gp, ResultSet rs) throws SQLException {
 		PlayerTimeManager m = gp.getManager(PlayerTimeManager.class);
-		m.playtick = rs.getInt("playtick");
-		m.totalidletick = rs.getInt("totalidletick");
+		m.setPlaytick(rs.getInt("playtick"));
+		m.setTotalIdletick(rs.getInt("totalidletick"));
+		m.reloadSevertick();
 	}
 
 	@Override
 	protected String saveCommand(GiganticPlayer gp) {
 		PlayerTimeManager m = gp.getManager(PlayerTimeManager.class);
-        String command = "";
-        command += "playtick = '" + m.playtick + "',"
-        		+ "totalidletick = '" + m.totalidletick + "',";
+		String command = "";
+        command += "playtick = '" + m.getPlaytick() + "',"
+        		+ "totalidletick = '" + m.getTotalIdletick() + "',";
         return command;
 	}
 
 	@Override
 	protected void takeoverPlayer(GiganticPlayer gp, PlayerDataTableManager tm) {
 		PlayerTimeManager m = gp.getManager(PlayerTimeManager.class);
-		m.playtick = tm.getPlayTick(gp);
+		m.setPlaytick(tm.getPlayTick(gp));
 	}
 
 	@Override
 	protected void firstjoinPlayer(GiganticPlayer gp) {
 		PlayerTimeManager m = gp.getManager(PlayerTimeManager.class);
-		m.servertick = 0;
-		m.playtick = 0;
-		m.loc = null;
-		m.totalidletick = 0;
-		m.idletime = 0;
-		m.playtick = 0;
+		m.firstJoinInit();
 	}
 }

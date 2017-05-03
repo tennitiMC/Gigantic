@@ -14,7 +14,6 @@ import com.github.unchama.player.GiganticStatus;
 import com.github.unchama.player.time.PlayerTimeManager;
 import com.github.unchama.yml.ConfigManager;
 import com.github.unchama.yml.DebugManager;
-import com.github.unchama.yml.DebugManager.DebugEnum;
 
 public class PlayerTimeTaskRunnable extends BukkitRunnable{
 	Gigantic plugin = Gigantic.plugin;
@@ -33,7 +32,7 @@ public class PlayerTimeTaskRunnable extends BukkitRunnable{
 
 	@Override
 	public void run() {
-		//TODO:ここで1分ごとに1minを0に設定
+		//1分毎にプレイ時間と待機時間を更新
 		Bukkit.getScheduler().runTask(plugin, new Runnable() {
 			@Override
 			public void run(){
@@ -48,41 +47,7 @@ public class PlayerTimeTaskRunnable extends BukkitRunnable{
 						GiganticStatus gs = PlayerManager.getStatus(gp);
 						if(gs.equals(GiganticStatus.AVAILABLE)){
 							PlayerTimeManager timeMng = gp.getManager(PlayerTimeManager.class);
-
-							//プレイ時間追加
-							int getservertick = player.getStatistic(org.bukkit.Statistic.PLAY_ONE_TICK);
-							int getincrease = getservertick - timeMng.servertick;
-							timeMng.servertick = getservertick;
-							timeMng.playtick += getincrease;
-
-							//放置判定
-							if(player.getLocation().equals(timeMng.loc)){
-								if(timeMng.isIdle()){
-									//既に放置中なら累計放置時間を追加
-									timeMng.totalidletick += getincrease;
-								}
-								timeMng.idletime ++;
-							}else{
-								timeMng.loc = player.getLocation();
-								timeMng.idletime = 0;
-							}
-							debug.sendMessage(player,DebugEnum.GUI,"プレイ時間更新"
-									+ ":servertick " + timeMng.servertick
-									+ ":playtick " + timeMng.playtick
-									+ ":totalidletick " + timeMng.totalidletick
-									+ ":idletime " + timeMng.idletime
-									);
-
-
-//							if(SeichiAssist.DEBUG){
-//								p.sendMessage("総プレイ時間に追加したtick:" + getincrease);
-//							}
-//								if(SeichiAssist.DEBUG){
-//									Util.sendEveryMessage(playerdata.name + "のidletime加算" + playerdata.idletime);
-//								}
-//								if(SeichiAssist.DEBUG){
-//									Util.sendEveryMessage(playerdata.name + "のidletimeリセット");
-//								}
+							timeMng.runUpdate();
 						}
 					}
 				}
