@@ -1,6 +1,5 @@
 package com.github.unchama.listener;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -121,7 +120,6 @@ public class FishingListener implements Listener {
 		// player.getStatistic(org.bukkit.Statistic.PLAY_ONE_TICK));
 		if (action.equals(Action.RIGHT_CLICK_AIR)
 				|| action.equals(Action.RIGHT_CLICK_BLOCK)) {
-			Bukkit.getServer().getLogger().info("return");
 			return;
 		}
 

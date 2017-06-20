@@ -41,6 +41,7 @@ public enum ListenerEnum {
     BLOCKCOLORING(new BlockColoringSkillListener()),
     FISHING(new FishingListener()),
     FISHINGLEVEL(new FishingLevelListener()),
+    HOOKSHOT(new HookShotListener()),
 	;
 	private Listener listener;
 
